@@ -162,7 +162,7 @@ export function AddServiceModal({ open, onClose, onAdd, categories: propCategori
                       <button type="button"
                         onClick={() => { setCategory(catSearch); setCatOpen(false); setCatSearch(""); }}
                         className="w-full text-left rounded-md px-3 py-1.5 text-xs cursor-pointer hover:bg-primary/5 text-primary font-medium">
-                        + Create "{catSearch}"
+                        + Create &ldquo;{catSearch}&rdquo;
                       </button>
                     )}
                   </div>
