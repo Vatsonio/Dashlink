@@ -224,50 +224,12 @@ services:
 
 </details>
 
-## Deployment
-
-<details>
-<summary><strong>Production (VPS)</strong></summary>
+## Update
 
 ```bash
-# 1. Bootstrap server
-scp scripts/bootstrap-server.sh user@your-vps:~/
-ssh user@your-vps 'bash ~/bootstrap-server.sh'
-
-# 2. Configure
-ssh user@your-vps 'nano /opt/dashlink/.env'  # Set DOMAIN=yourdomain.com
-
-# 3. Start
-ssh user@your-vps 'cd /opt/dashlink && docker compose up -d'
+docker compose pull
+docker compose up -d
 ```
-
-</details>
-
-<details>
-<summary><strong>Update & Rollback</strong></summary>
-
-```bash
-# Update
-ssh user@your-vps 'bash /opt/dashlink/scripts/deploy.sh'
-
-# Rollback
-git log --oneline -5
-git checkout <commit>
-docker compose up -d --build
-```
-
-</details>
-
-<details>
-<summary><strong>CI/CD - Required GitHub Secrets</strong></summary>
-
-| Secret | Description |
-|:-------|:------------|
-| `VPS_HOST` | Server IP or hostname |
-| `VPS_USER` | SSH username |
-| `VPS_SSH_KEY` | Private SSH key |
-
-</details>
 
 ## Tech Stack
 
@@ -276,7 +238,7 @@ docker compose up -d --build
 | Frontend | Next.js 15 (App Router), Tailwind CSS, Lucide Icons |
 | Backend | FastAPI (Python 3.12), Docker SDK |
 | Proxy | Caddy 2 (automatic HTTPS) |
-| CI/CD | GitHub Actions, GHCR, SSH deploy |
+| CI/CD | GitHub Actions, GHCR |
 
 ## Contributing
 
