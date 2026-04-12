@@ -95,6 +95,41 @@ docker compose -f docker-compose.dev.yml up --build
 
 </details>
 
+<details>
+<summary><strong>Portainer / Stacks</strong></summary>
+
+Create a new stack in Portainer and paste:
+
+```yaml
+version: "3"
+services:
+  backend:
+    image: ghcr.io/vatsonio/dashlink-api:latest
+    container_name: dashlink-api
+    restart: unless-stopped
+    volumes:
+      - config_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - DL_DEBUG=false
+  frontend:
+    image: ghcr.io/vatsonio/dashlink-ui:latest
+    container_name: dashlink-ui
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - API_URL=http://backend:8000
+    depends_on:
+      - backend
+volumes:
+  config_data:
+```
+
+Open `http://YOUR-IP:3000` and you're done.
+
+</details>
+
 ## Themes
 
 Dashlink ships with **5 hand-crafted themes** - switch instantly from the UI.
