@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #7C3AED;
+  --color-secondary: #A78BFA;
+  --color-cta: #22C55E;
+  --color-background: #FAF5FF;
+  --color-surface: #FFFFFF;
+  --color-text: #4C1D95;
+  --color-muted: #6B7280;
+  --font-heading: "Outfit", sans-serif;
+  --font-body: "Work Sans", sans-serif;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: 3px;
+}
+
+/* Only apply transitions to interactive elements, not everything */
+a, button {
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease, opacity 150ms ease;
+}
+
+/* When custom background is set, make surfaces semi-transparent with theme tint */
+.has-custom-bg .bg-surface {
+  background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter: blur(8px);
+}
+.has-custom-bg .bg-surface\/50 {
+  background-color: color-mix(in srgb, var(--color-surface) 50%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+/* Force single column on mobile for columns layout */
+@media (max-width: 639px) {
+  .columns-layout { grid-template-columns: 1fr !important; }
+}
+
+@keyframes cpFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes cpSlideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes cpTabSwitch {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,54 @@
+name: Bug Report
+description: Report a bug in Dashlink
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      placeholder: A clear description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      placeholder: If applicable, add screenshots.
+
+  - type: input
+    id: docker-version
+    attributes:
+      label: Docker version
+      placeholder: "e.g., 27.0.3"
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: "e.g., Chrome 120, Firefox 121"
+
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: "e.g., Ubuntu 24.04, macOS 15"

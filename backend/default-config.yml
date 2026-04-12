@@ -1,0 +1,82 @@
+title: Dashlink
+subtitle: Your home dashboard
+theme: violet-marketplace
+pin_enabled: false
+pin_code: ""
+columns: 4
+layout_mode: grid
+search_enabled: true
+scan_interval: 30
+background_url: ""
+background_opacity: 0.3
+weather_api_key: ""
+weather_city: ""
+weather_units: metric
+categories:
+  - name: Default
+    icon: home
+    sort_order: 0
+  - name: Docker
+    icon: docker
+    sort_order: 1
+  - name: Media
+    icon: play
+    sort_order: 2
+  - name: Monitoring
+    icon: activity
+    sort_order: 3
+services:
+  - id: demo-portainer
+    name: Portainer
+    url: http://localhost:9443
+    icon: docker
+    description: Docker management UI
+    category: Docker
+    status: unknown
+    source: manual
+    sort_order: 0
+  - id: demo-grafana
+    name: Grafana
+    url: http://localhost:3001
+    icon: activity
+    description: Metrics & dashboards
+    category: Monitoring
+    status: unknown
+    source: manual
+    sort_order: 0
+  - id: demo-pihole
+    name: Pi-hole
+    url: http://localhost:8080
+    icon: shield
+    description: Network ad blocker
+    category: Default
+    status: unknown
+    source: manual
+    sort_order: 0
+  - id: demo-jellyfin
+    name: Jellyfin
+    url: http://localhost:8096
+    icon: play
+    description: Media streaming server
+    category: Media
+    status: unknown
+    source: manual
+    sort_order: 0
+  - id: demo-homeassistant
+    name: Home Assistant
+    url: http://localhost:8123
+    icon: home
+    description: Smart home automation
+    category: Default
+    status: unknown
+    source: manual
+    sort_order: 1
+  - id: demo-gitea
+    name: Gitea
+    url: http://localhost:3002
+    icon: server
+    description: Self-hosted Git service
+    category: Docker
+    status: unknown
+    source: manual
+    sort_order: 1
