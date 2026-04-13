@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import os
 import socket
 
 from app.models import Service, ServiceStatus
@@ -33,17 +34,54 @@ KNOWN_PORTS: dict[int, tuple[str, str]] = {
     51820: ("WireGuard", "shield"),
 }
 
-def _detect_local_subnet() -> str:
-    """Detect the local network subnet (e.g. 192.168.31.0/24)."""
+
+def get_host_ip() -> str:
+    """Get the real host IP visible to the LAN.
+
+    Priority:
+    1. HOST_IP env var (user override)
+    2. Docker host gateway (works inside containers)
+    3. UDP socket detection (works on bare metal)
+    4. Fallback
+    """
+    # 1. Explicit override
+    env_ip = os.environ.get("HOST_IP", "").strip()
+    if env_ip:
+        return env_ip
+
+    # 2. Docker host gateway (default route inside container)
+    try:
+        with open("/proc/net/route") as f:
+            for line in f:
+                fields = line.strip().split()
+                if fields[1] == "00000000":  # default route
+                    # Gateway IP is in hex, little-endian
+                    hex_ip = fields[2]
+                    ip = ".".join(str(int(hex_ip[i:i+2], 16)) for i in (6, 4, 2, 0))
+                    if not ip.startswith("127."):
+                        return ip
+    except (FileNotFoundError, Exception):
+        pass
+
+    # 3. UDP socket trick
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         local_ip = s.getsockname()[0]
         s.close()
-        parts = local_ip.split(".")
-        return f"{parts[0]}.{parts[1]}.{parts[2]}.0/24"
+        if not local_ip.startswith("172."):
+            return local_ip
     except Exception:
-        return "192.168.1.0/24"
+        pass
+
+    return "192.168.1.1"
+
+
+def _detect_local_subnet() -> str:
+    """Detect the LAN subnet based on host IP."""
+    ip = get_host_ip()
+    parts = ip.split(".")
+    return f"{parts[0]}.{parts[1]}.{parts[2]}.0/24"
 
 
 DEFAULT_SCAN_TARGETS = [_detect_local_subnet()]

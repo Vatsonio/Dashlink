@@ -47,13 +47,19 @@ def _guess_icon(name: str) -> str:
 
 def _extract_url(container: Any) -> str | None:
     """Extract accessible URL from container port bindings."""
+    from app.services.network_scanner import get_host_ip
+
     ports = container.attrs.get("NetworkSettings", {}).get("Ports") or {}
     for port_key, bindings in ports.items():
         if bindings:
             host_ip = bindings[0].get("HostIp", "0.0.0.0")
             host_port = bindings[0].get("HostPort")
             if host_port:
-                host = "localhost" if host_ip in ("0.0.0.0", "::") else host_ip
+                # Use real host IP instead of localhost so links work from LAN
+                if host_ip in ("0.0.0.0", "::", "127.0.0.1"):
+                    host = get_host_ip()
+                else:
+                    host = host_ip
                 proto = "https" if "443" in port_key else "http"
                 return f"{proto}://{host}:{host_port}"
     return None
@@ -91,9 +97,7 @@ async def discover_docker_services(socket_path: str = "") -> list[Service]:
         if _get_label(container, "dashlink.hide", "").lower() in ("true", "1", "yes"):
             continue
 
-        url = _get_label(container, "dashlink.url", "") or _extract_url(container)
-        if not url:
-            continue  # No accessible URL - skip
+        url = _get_label(container, "dashlink.url", "") or _extract_url(container) or ""
 
         icon = _get_label(container, "dashlink.icon", "") or _guess_icon(name)
         category = _get_label(container, "dashlink.category", "Docker")

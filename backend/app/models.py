@@ -13,7 +13,7 @@ class ServiceStatus(str, Enum):
 class Service(BaseModel):
     id: str
     name: str
-    url: str
+    url: str = ""
     icon: str = ""
     description: str = ""
     category: str = "Default"

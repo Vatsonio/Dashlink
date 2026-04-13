@@ -112,6 +112,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - DL_DEBUG=false
+      - HOST_IP=192.168.31.5  # your server's LAN IP
   frontend:
     image: ghcr.io/vatsonio/dashlink-ui:latest
     container_name: dashlink-ui
